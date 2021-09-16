@@ -1,0 +1,714 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Expense Manager",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://expense.spacenditure.com"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Authenticate to application"
+      },
+      {
+        "name": "expense",
+        "description": "Access the expense information"
+      }
+    ],
+    "paths": {
+      "/api/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Login",
+          "description": "Login though basic auth and get access_token.",
+          "requestBody": {
+            "content": {}
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/inline_response_200"
+                  },
+                  "example": {
+                    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOTgyNzIzMi00OWZkLTQwZmYtYjQyYy03MmViZWRhMDZmMDAiLCJuYW1lIjoiSm9zZXBoIEQuIFdyaWdodCIsImdpdmVuX25hbWUiOiJKb3NlcGgiL.jlEYXg0nxMJe7i6nACOutLfKBna6voyI-udqB5w34p0",
+                    "token_type": "Bearer",
+                    "expires_in": 3600
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BAD_REQUEST",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    "title": "BAD_REQUEST",
+                    "status": 400,
+                    "detail": "The request cannot be fulfilled due to bad syntax."
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "FORBIDDEN",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                    "title": "FORBIDDEN",
+                    "status": 403,
+                    "detail": "The request was a legal request, but the server is refusing to respond to it."
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "INTERNAL_SERVER_ERROR",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                    "title": "INTERNAL_SERVER_ERROR",
+                    "status": 500,
+                    "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "basicAuth": []
+            }
+          ]
+        }
+      },
+      "/api/expense": {
+        "get": {
+          "tags": [
+            "expense"
+          ],
+          "summary": "List Expenses",
+          "description": "Get the list of expenses.",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "number",
+                "format": "int64"
+              },
+              "example": "1"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/inline_response_200_1"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BAD_REQUEST",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    "title": "BAD_REQUEST",
+                    "status": 400,
+                    "detail": "The request cannot be fulfilled due to bad syntax."
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "FORBIDDEN",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                    "title": "FORBIDDEN",
+                    "status": 403,
+                    "detail": "The request was a legal request, but the server is refusing to respond to it."
+                  }
+                }
+              }
+            },
+            "413": {
+              "description": "REQUEST_ENTITY_TOO_LARGE",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.11",
+                    "title": "REQUEST_ENTITY_TOO_LARGE",
+                    "status": 413,
+                    "detail": "The request is larger than the server is willing or able to process."
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "INTERNAL_SERVER_ERROR",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                    "title": "INTERNAL_SERVER_ERROR",
+                    "status": 500,
+                    "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "post": {
+          "tags": [
+            "expense"
+          ],
+          "summary": "Add Expense",
+          "description": "Add new expense into the database.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Expense"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Expense"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BAD_REQUEST",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    "title": "BAD_REQUEST",
+                    "status": 400,
+                    "detail": "The request cannot be fulfilled due to bad syntax."
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "FORBIDDEN",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                    "title": "FORBIDDEN",
+                    "status": 403,
+                    "detail": "The request was a legal request, but the server is refusing to respond to it."
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "INTERNAL_SERVER_ERROR",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                    "title": "INTERNAL_SERVER_ERROR",
+                    "status": 500,
+                    "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/api/expense/{expenseId}": {
+        "put": {
+          "tags": [
+            "expense"
+          ],
+          "summary": "Update Expense by expenseId",
+          "description": "Update the expense in the database.",
+          "parameters": [
+            {
+              "name": "expenseId",
+              "in": "path",
+              "description": "Expanse ID",
+              "required": true,
+              "style": "simple",
+              "explode": false,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Expense"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Expense"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BAD_REQUEST",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    "title": "BAD_REQUEST",
+                    "status": 400,
+                    "detail": "The request cannot be fulfilled due to bad syntax."
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "FORBIDDEN",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                    "title": "FORBIDDEN",
+                    "status": 403,
+                    "detail": "The request was a legal request, but the server is refusing to respond to it."
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "INTERNAL_SERVER_ERROR",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                    "title": "INTERNAL_SERVER_ERROR",
+                    "status": 500,
+                    "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        },
+        "delete": {
+          "tags": [
+            "expense"
+          ],
+          "summary": "Delete Expense by expenseId",
+          "description": "Delete the expense from the database.",
+          "parameters": [
+            {
+              "name": "expenseId",
+              "in": "path",
+              "description": "Expense ID",
+              "required": true,
+              "style": "simple",
+              "explode": false,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Expense"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BAD_REQUEST",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    "title": "BAD_REQUEST",
+                    "status": 400,
+                    "detail": "The request cannot be fulfilled due to bad syntax."
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "FORBIDDEN",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                    "title": "FORBIDDEN",
+                    "status": 403,
+                    "detail": "The request was a legal request, but the server is refusing to respond to it."
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "INTERNAL_SERVER_ERROR",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HttpError"
+                  },
+                  "example": {
+                    "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                    "title": "INTERNAL_SERVER_ERROR",
+                    "status": 500,
+                    "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Expense": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "Expense",
+              "enum": [
+                "Expense",
+                "Incode"
+              ]
+            },
+            "amount": {
+              "type": "number",
+              "format": "float",
+              "example": 250
+            },
+            "date": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2017-07-21T17:32:28Z"
+            },
+            "category": {
+              "type": "string",
+              "example": "Education"
+            },
+            "note": {
+              "type": "string",
+              "example": "College Fee"
+            }
+          }
+        },
+        "HttpError": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.5"
+            },
+            "title": {
+              "type": "string",
+              "example": "METHOD_NOT_ALLOWED"
+            },
+            "status": {
+              "type": "number",
+              "example": 405
+            },
+            "detail": {
+              "type": "string",
+              "example": "Requested method is not supported for the requested resource."
+            }
+          }
+        },
+        "TokenError": {
+          "required": [
+            "message",
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "expiredAt": {
+              "type": "number",
+              "format": "date"
+            },
+            "date": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        },
+        "inline_response_200": {
+          "type": "object",
+          "properties": {
+            "access_token": {
+              "type": "string"
+            },
+            "token_type": {
+              "type": "string"
+            },
+            "expires_in": {
+              "type": "number"
+            }
+          }
+        },
+        "inline_response_200_1": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "number",
+              "example": 1
+            },
+            "perPage": {
+              "type": "number",
+              "example": 10
+            },
+            "total": {
+              "type": "number",
+              "example": 800
+            },
+            "result": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Expense"
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "BadRequest": {
+          "description": "BAD_REQUEST",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                "title": "BAD_REQUEST",
+                "status": 400,
+                "detail": "The request cannot be fulfilled due to bad syntax."
+              }
+            }
+          }
+        },
+        "Unauthorized": {
+          "description": "UNAUTHORIZED",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7235#section-4.2",
+                "title": "UNAUTHORIZED",
+                "status": 401,
+                "detail": "Authentication failed or not yet been provided."
+              }
+            }
+          }
+        },
+        "Forbidden": {
+          "description": "FORBIDDEN",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
+                "title": "FORBIDDEN",
+                "status": 403,
+                "detail": "The request was a legal request, but the server is refusing to respond to it."
+              }
+            }
+          }
+        },
+        "NotFound": {
+          "description": "NOT_FOUND",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4",
+                "title": "NOT_FOUND",
+                "status": 404,
+                "detail": "The requested resource could not be found but may be available again in the future."
+              }
+            }
+          }
+        },
+        "MethodNotAllowed": {
+          "description": "METHOD_NOT_ALLOWED",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.5",
+                "title": "METHOD_NOT_ALLOWED",
+                "status": 405,
+                "detail": "Requested method is not supported for the requested resource."
+              }
+            }
+          }
+        },
+        "RequestEntityTooLarge": {
+          "description": "REQUEST_ENTITY_TOO_LARGE",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.11",
+                "title": "REQUEST_ENTITY_TOO_LARGE",
+                "status": 413,
+                "detail": "The request is larger than the server is willing or able to process."
+              }
+            }
+          }
+        },
+        "InternalServerError": {
+          "description": "INTERNAL_SERVER_ERROR",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HttpError"
+              },
+              "example": {
+                "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
+                "title": "INTERNAL_SERVER_ERROR",
+                "status": 500,
+                "detail": "Server encountered an unexpected condition that prevented it from fulfilling the request."
+              }
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "basicAuth": {
+          "type": "http",
+          "scheme": "basic"
+        },
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    }
+  }
